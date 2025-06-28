@@ -49,8 +49,7 @@ export async function GET(
       content: reply.content,
       created_at: reply.created_at,
       like_count: reply.like_count || 0,
-      author_name: Array.isArray(reply.author) ? reply.author[0]?.username || 'Unknown User' : (reply.author as any)?.username || 'Unknown User',
-      author_email: Array.isArray(reply.author) ? reply.author[0]?.email || null : (reply.author as any)?.email || null
+      author_name: Array.isArray(reply.author) ? reply.author[0]?.username || 'Unknown User' : (reply.author as any)?.username || 'Unknown User'
     })) || []
 
     return NextResponse.json({ replies: transformedReplies })
