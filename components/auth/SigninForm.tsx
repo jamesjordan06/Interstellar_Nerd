@@ -52,9 +52,9 @@ export default function SigninForm() {
         await getSession()
         router.push('/forum')
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.')
-    } finally {
+    } catch (_error) {
+      console.error('Sign in error:', _error)
+      setError('Invalid email or password')
       setIsLoading(false)
     }
   }
@@ -91,9 +91,9 @@ export default function SigninForm() {
       console.log('Attempting Google sign-in...')
       // Let NextAuth handle the redirect naturally - this works better for OAuth
       await signIn('google', { callbackUrl: '/forum' })
-    } catch (error) {
-      console.error('Google sign-in exception:', error)
-      setError('Google sign-in failed. Please check your internet connection and try again.')
+    } catch (_error) {
+      console.error('OAuth sign in error:', _error)
+      setError('Failed to sign in with Google. Please try again.')
       setIsLoading(false)
     }
     // Note: setIsLoading(false) is not called on success because the page will redirect

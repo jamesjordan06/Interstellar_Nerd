@@ -60,9 +60,9 @@ export default function SignupForm() {
       } else {
         setError(data.error || 'An error occurred')
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.')
-    } finally {
+    } catch (_error) {
+      console.error('Signup error:', _error)
+      setError('Failed to create account. Please try again.')
       setIsLoading(false)
     }
   }
@@ -71,8 +71,9 @@ export default function SignupForm() {
     setIsLoading(true)
     try {
       await signIn('google', { callbackUrl: '/forum' })
-    } catch (error) {
-      setError('Google sign-up failed. Please try again.')
+    } catch (_error) {
+      console.error('OAuth signup error:', _error)  
+      setError('Failed to create account with Google. Please try again.')
       setIsLoading(false)
     }
   }

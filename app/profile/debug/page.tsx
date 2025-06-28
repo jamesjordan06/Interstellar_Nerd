@@ -31,13 +31,13 @@ interface DebugData {
 }
 
 export default function DebugPage() {
+  const [_sessionData, _setSessionData] = useState<Record<string, unknown> | null>(null)
+  const [_dbData, _setDbData] = useState<Record<string, unknown> | null>(null)
+  const [_loading, setLoading] = useState(true)
   const { data: session } = useSession()
   const [debugData, setDebugData] = useState<DebugData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
-  const [sessionData, setSessionData] = useState<Record<string, unknown> | null>(null)
-  const [dbData, setDbData] = useState<Record<string, unknown> | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (session?.user?.id) {

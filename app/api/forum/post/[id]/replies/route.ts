@@ -29,9 +29,8 @@ export async function GET(
       return NextResponse.json({ error: 'Failed to fetch replies' }, { status: 500 })
     }
 
-    let likedReplyIds = new Set<string>()
-
-    // Only check like status for authenticated users
+    // Get liked reply IDs for the user (if authenticated)
+    let _likedReplyIds: string[] = []
     if (session?.user?.id && replies && replies.length > 0) {
       // Get all reply likes for this user
       const replyIds = replies.map(reply => reply.id)
@@ -41,7 +40,7 @@ export async function GET(
         .eq('user_id', session.user.id)
         .in('reply_id', replyIds)
 
-      likedReplyIds = new Set(userLikes?.map(like => like.reply_id) || [])
+      _likedReplyIds = userLikes?.map(like => like.reply_id) || []
     }
 
     // Transform the data
