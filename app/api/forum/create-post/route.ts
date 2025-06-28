@@ -66,9 +66,13 @@ export async function POST(request: Request) {
         title,
         slug,
         content,
+        excerpt,
+        view_count,
+        like_count,
+        reply_count,
         created_at,
         author:users!posts_author_id_fkey(username),
-        category:categories(name, color)
+        category:categories(name, color, icon)
       `)
       .single()
 
