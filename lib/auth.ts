@@ -95,8 +95,8 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async signIn({ user, _account, profile, email, credentials }) {
-      if (_account?.provider === 'google') {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (account?.provider === 'google') {
         try {
           // Check if a user with this email already exists
           const { data: existingUser, error } = await supabaseAdmin
@@ -113,8 +113,8 @@ export const authOptions: NextAuthOptions = {
               .from('accounts')
               .select('*')
               .eq('user_id', existingUser.id)
-              .eq('provider', _account.provider)
-              .eq('provider_account_id', _account.providerAccountId)
+              .eq('provider', account.provider)
+              .eq('provider_account_id', account.providerAccountId)
               .single()
 
             if (!existingAccount) {
@@ -127,15 +127,15 @@ export const authOptions: NextAuthOptions = {
                   .from('pending_account_links')
                   .upsert({
                     user_id: existingUser.id,
-                    provider: _account.provider,
-                    provider_account_id: _account.providerAccountId,
+                    provider: account.provider,
+                    provider_account_id: account.providerAccountId,
                     provider_email: user.email,
-                    access_token: _account.access_token,
-                    refresh_token: _account.refresh_token,
-                    expires_at: convertUnixToTimestamp(_account.expires_at),
-                    token_type: _account.token_type,
-                    scope: _account.scope,
-                    id_token: _account.id_token,
+                    access_token: account.access_token,
+                    refresh_token: account.refresh_token,
+                    expires_at: convertUnixToTimestamp(account.expires_at),
+                    token_type: account.token_type,
+                    scope: account.scope,
+                    id_token: account.id_token,
                     created_at: new Date().toISOString(),
                     expires_at_pending: new Date(Date.now() + 15 * 60 * 1000).toISOString() // 15 minutes
                   })
@@ -146,7 +146,7 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 // Redirect to verification page instead of signing in
-                return `/auth/verify-account-link?email=${encodeURIComponent(user.email!)}&provider=${_account.provider}`
+                return `/auth/verify-account-link?email=${encodeURIComponent(user.email!)}&provider=${account.provider}`
               }
 
               // If no password exists, safe to auto-link (OAuth-only account)
@@ -154,14 +154,14 @@ export const authOptions: NextAuthOptions = {
                 .from('accounts')
                 .insert({
                   user_id: existingUser.id,
-                  provider: _account.provider,
-                  provider_account_id: _account.providerAccountId,
-                  access_token: _account.access_token,
-                  refresh_token: _account.refresh_token,
-                  expires_at: convertUnixToTimestamp(_account.expires_at),
-                  token_type: _account.token_type,
-                  scope: _account.scope,
-                  id_token: _account.id_token
+                  provider: account.provider,
+                  provider_account_id: account.providerAccountId,
+                  access_token: account.access_token,
+                  refresh_token: account.refresh_token,
+                  expires_at: convertUnixToTimestamp(account.expires_at),
+                  token_type: account.token_type,
+                  scope: account.scope,
+                  id_token: account.id_token
                 })
 
               if (linkError) {
@@ -173,12 +173,12 @@ export const authOptions: NextAuthOptions = {
               const { error: updateError } = await supabaseAdmin
                 .from('accounts')
                 .update({
-                  access_token: _account.access_token,
-                  refresh_token: _account.refresh_token,
-                  expires_at: convertUnixToTimestamp(_account.expires_at),
-                  token_type: _account.token_type,
-                  scope: _account.scope,
-                  id_token: _account.id_token
+                  access_token: account.access_token,
+                  refresh_token: account.refresh_token,
+                  expires_at: convertUnixToTimestamp(account.expires_at),
+                  token_type: account.token_type,
+                  scope: account.scope,
+                  id_token: account.id_token
                 })
                 .eq('id', existingAccount.id)
 
@@ -224,14 +224,14 @@ export const authOptions: NextAuthOptions = {
               .from('accounts')
               .insert({
                 user_id: newUser.id,
-                provider: _account.provider,
-                provider_account_id: _account.providerAccountId,
-                access_token: _account.access_token,
-                refresh_token: _account.refresh_token,
-                expires_at: convertUnixToTimestamp(_account.expires_at),
-                token_type: _account.token_type,
-                scope: _account.scope,
-                id_token: _account.id_token
+                provider: account.provider,
+                provider_account_id: account.providerAccountId,
+                access_token: account.access_token,
+                refresh_token: account.refresh_token,
+                expires_at: convertUnixToTimestamp(account.expires_at),
+                token_type: account.token_type,
+                scope: account.scope,
+                id_token: account.id_token
               })
 
             if (accountError) {
