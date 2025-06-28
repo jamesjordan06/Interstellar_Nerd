@@ -9,12 +9,13 @@ export async function GET() {
         id,
         title,
         content,
+        excerpt,
         created_at,
         view_count,
         like_count,
         reply_count,
         author:users!posts_author_id_fkey(username),
-        category:categories(name, color)
+        category:categories(name, color, icon)
       `)
       .eq('is_hidden', false)
       .order('created_at', { ascending: false })
@@ -34,10 +35,10 @@ export async function GET() {
       view_count: post.view_count || 0,
       like_count: post.like_count || 0,
       reply_count: post.reply_count || 0,
-      author_name: (post.author as { username: string } | null)?.username || 'Unknown User',
-      category_name: (post.category as { name: string } | null)?.name || 'Unknown Category',
-      category_color: (post.category as { color: string } | null)?.color || '#6B7280',
-      category_icon: (post.category as { icon: string } | null)?.icon || '📝'
+      author_name: Array.isArray(post.author) ? post.author[0]?.username : (post.author as any)?.username || 'Unknown User',
+      category_name: Array.isArray(post.category) ? post.category[0]?.name : (post.category as any)?.name || 'Unknown Category',
+      category_color: Array.isArray(post.category) ? post.category[0]?.color : (post.category as any)?.color || '#6B7280',
+      category_icon: Array.isArray(post.category) ? post.category[0]?.icon : (post.category as any)?.icon || '📝'
     })) || []
 
     return NextResponse.json({ posts: transformedPosts })
