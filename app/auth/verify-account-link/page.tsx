@@ -1,19 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 
-export default function VerifyAccountLinkPage() {
+export default function VerifyAccountLink() {
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [provider, setProvider] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
-  const router = useRouter()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     const emailParam = searchParams.get('email')
@@ -56,9 +55,8 @@ export default function VerifyAccountLinkPage() {
       } else {
         setError(data.error || 'Verification failed')
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.')
-    } finally {
+    } catch (_) {
+      setError('Verification failed. Please try again.')
       setIsLoading(false)
     }
   }

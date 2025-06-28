@@ -116,10 +116,9 @@ export default function UsernamePage() {
       } else {
         setError(data.error || 'Failed to update username')
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.')
-    } finally {
-      setIsSaving(false)
+    } catch (_) {
+      setError('Failed to update username. Please try again.')
+      setIsLoading(false)
     }
   }
 

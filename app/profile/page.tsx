@@ -63,8 +63,9 @@ export default function ProfilePage() {
           bio: data.profile.bio || ''
         })
       }
-    } catch (error) {
-      console.error('Error fetching profile:', error)
+    } catch (err) {
+      console.error('Error fetching profile:', err)
+      setIsLoading(false)
     }
   }
 

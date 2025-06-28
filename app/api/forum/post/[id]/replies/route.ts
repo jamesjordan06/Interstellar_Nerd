@@ -49,10 +49,9 @@ export async function GET(
       id: reply.id,
       content: reply.content,
       created_at: reply.created_at,
-      like_count: reply.like_count,
-      author_name: (reply.author as any)?.username || 'Unknown User',
-      author_image: (reply.author as any)?.avatar_url,
-      is_liked: likedReplyIds.has(reply.id)
+      like_count: reply.like_count || 0,
+      author_name: (reply.author as { username: string } | null)?.username || 'Unknown User',
+      author_email: (reply.author as { email: string } | null)?.email || null
     })) || []
 
     return NextResponse.json({ replies: transformedReplies })

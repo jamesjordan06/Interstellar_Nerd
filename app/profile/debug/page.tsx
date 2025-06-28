@@ -35,6 +35,9 @@ export default function DebugPage() {
   const [debugData, setDebugData] = useState<DebugData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [sessionData, setSessionData] = useState<Record<string, unknown> | null>(null)
+  const [dbData, setDbData] = useState<Record<string, unknown> | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -51,8 +54,9 @@ export default function DebugPage() {
       } else {
         setError('Failed to fetch debug data')
       }
-    } catch (error) {
-      setError('Error fetching debug data')
+    } catch (err) {
+      console.error('Debug fetch error:', err)
+      setLoading(false)
     } finally {
       setIsLoading(false)
     }

@@ -29,14 +29,15 @@ export async function GET() {
     const transformedPosts = posts?.map(post => ({
       id: post.id,
       title: post.title,
-      content: post.content,
+      excerpt: post.excerpt,
       created_at: post.created_at,
-      view_count: post.view_count,
-      like_count: post.like_count,
-      reply_count: post.reply_count,
-      author_name: (post.author as any)?.username || 'Unknown User',
-      category_name: (post.category as any)?.name || 'General',
-      category_color: (post.category as any)?.color || '#6B7280'
+      view_count: post.view_count || 0,
+      like_count: post.like_count || 0,
+      reply_count: post.reply_count || 0,
+      author_name: (post.author as { username: string } | null)?.username || 'Unknown User',
+      category_name: (post.category as { name: string } | null)?.name || 'Unknown Category',
+      category_color: (post.category as { color: string } | null)?.color || '#6B7280',
+      category_icon: (post.category as { icon: string } | null)?.icon || '📝'
     })) || []
 
     return NextResponse.json({ posts: transformedPosts })

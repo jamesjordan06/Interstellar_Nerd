@@ -53,7 +53,7 @@ export default function ChangePasswordPage() {
       } else {
         setError(data.error || 'Failed to change password')
       }
-    } catch (error) {
+    } catch (_) {
       setError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)

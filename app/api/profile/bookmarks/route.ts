@@ -39,21 +39,18 @@ export async function GET() {
 
     // Transform the data
     const transformedBookmarks = bookmarks?.map(bookmark => ({
-      bookmark_id: bookmark.id,
-      bookmarked_at: bookmark.created_at,
-      post: {
-        id: (bookmark.post as any)?.id,
-        title: (bookmark.post as any)?.title,
-        excerpt: (bookmark.post as any)?.excerpt,
-        created_at: (bookmark.post as any)?.created_at,
-        view_count: (bookmark.post as any)?.view_count || 0,
-        like_count: (bookmark.post as any)?.like_count || 0,
-        reply_count: (bookmark.post as any)?.reply_count || 0,
-        category_name: (bookmark.post as any)?.category?.name || 'General',
-        category_color: (bookmark.post as any)?.category?.color || '#6B7280',
-        author_name: (bookmark.post as any)?.author?.username || 'Unknown User'
-      }
-    })).filter(bookmark => bookmark.post.id) || [] // Filter out any bookmarks with deleted posts
+      id: bookmark.id,
+      title: (bookmark.post as { title: string } | null)?.title || 'Unknown Post',
+      excerpt: (bookmark.post as { excerpt: string } | null)?.excerpt || 'No excerpt available',
+      created_at: bookmark.created_at,
+      view_count: (bookmark.post as { view_count: number } | null)?.view_count || 0,
+      like_count: (bookmark.post as { like_count: number } | null)?.like_count || 0,
+      reply_count: (bookmark.post as { reply_count: number } | null)?.reply_count || 0,
+      author_name: (bookmark.post as { author?: { username: string } } | null)?.author?.username || 'Unknown User',
+      category_name: (bookmark.post as { category?: { name: string } } | null)?.category?.name || 'Unknown Category',
+      category_color: (bookmark.post as { category?: { color: string } } | null)?.category?.color || '#6B7280',
+      category_icon: (bookmark.post as { category?: { icon: string } } | null)?.category?.icon || '📝'
+    })) || []
 
     return NextResponse.json({ bookmarks: transformedBookmarks })
   } catch (error) {

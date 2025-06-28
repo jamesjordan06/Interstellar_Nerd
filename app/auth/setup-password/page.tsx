@@ -60,9 +60,8 @@ export default function SetupPasswordPage() {
       } else {
         setError(data.error || 'Failed to set password')
       }
-    } catch (error) {
+    } catch (_) {
       setError('An error occurred. Please try again.')
-    } finally {
       setIsLoading(false)
     }
   }

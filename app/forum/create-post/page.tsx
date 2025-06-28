@@ -1,6 +1,5 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -15,7 +14,6 @@ interface Category {
 }
 
 export default function CreatePostPage() {
-  const { data: session } = useSession()
   const router = useRouter()
   
   const [categories, setCategories] = useState<Category[]>([])

@@ -1,6 +1,5 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -16,7 +15,6 @@ interface SpaceFact {
 }
 
 export default function SpaceFactsAdminPage() {
-  const { data: session } = useSession()
   const [facts, setFacts] = useState<SpaceFact[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [editingFact, setEditingFact] = useState<SpaceFact | null>(null)
