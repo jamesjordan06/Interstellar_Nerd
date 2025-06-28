@@ -51,7 +51,7 @@ export async function GET(
       view_count: post.view_count || 0,
       like_count: post.like_count || 0,
       reply_count: post.reply_count || 0,
-      author_name: (post.author as { username: string } | null)?.username || 'Unknown User',
+      author_name: Array.isArray(post.author) ? post.author[0]?.username || 'Unknown User' : (post.author as any)?.username || 'Unknown User',
       category_name: category.name,
       category_color: category.color
     })) || []
