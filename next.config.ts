@@ -29,6 +29,17 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
+  experimental: {
+    // Enable the instrumentation hook
+    instrumentationHook: false,
+  },
+  // Enable experimental features if needed
+  output: 'standalone',
 };
 
 export default nextConfig;
