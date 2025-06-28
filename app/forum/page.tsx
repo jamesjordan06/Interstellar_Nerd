@@ -141,7 +141,7 @@ export default function ForumPage() {
   }
 
   const truncateContent = (content: string, maxLength: number = 150) => {
-    if (content.length <= maxLength) return content
+    if (!content || content.length <= maxLength) return content || ''
     return content.substring(0, maxLength) + '...'
   }
 

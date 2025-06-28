@@ -25,7 +25,7 @@ export async function GET() {
           view_count,
           like_count,
           reply_count,
-          category:categories(name, color),
+          category:categories(name, color, icon),
           author:users!posts_author_id_fkey(username)
         )
       `)
@@ -38,19 +38,25 @@ export async function GET() {
     }
 
     // Transform the data
-    const transformedBookmarks = bookmarks?.map(bookmark => ({
-      id: bookmark.id,
-      title: (bookmark.post as { title: string } | null)?.title || 'Unknown Post',
-      excerpt: (bookmark.post as { excerpt: string } | null)?.excerpt || 'No excerpt available',
-      created_at: bookmark.created_at,
-      view_count: (bookmark.post as { view_count: number } | null)?.view_count || 0,
-      like_count: (bookmark.post as { like_count: number } | null)?.like_count || 0,
-      reply_count: (bookmark.post as { reply_count: number } | null)?.reply_count || 0,
-      author_name: (bookmark.post as { author?: { username: string } } | null)?.author?.username || 'Unknown User',
-      category_name: (bookmark.post as { category?: { name: string } } | null)?.category?.name || 'Unknown Category',
-      category_color: (bookmark.post as { category?: { color: string } } | null)?.category?.color || '#6B7280',
-      category_icon: (bookmark.post as { category?: { icon: string } } | null)?.category?.icon || '📝'
-    })) || []
+    const transformedBookmarks = bookmarks?.map(bookmark => {
+      const post = Array.isArray(bookmark.post) ? bookmark.post[0] : bookmark.post;
+      const author = Array.isArray(post?.author) ? post.author[0] : post?.author;
+      const category = Array.isArray(post?.category) ? post.category[0] : post?.category;
+      
+      return {
+        id: bookmark.id,
+        title: post?.title || 'Unknown Post',
+        excerpt: post?.excerpt || 'No excerpt available',
+        created_at: bookmark.created_at,
+        view_count: post?.view_count || 0,
+        like_count: post?.like_count || 0,
+        reply_count: post?.reply_count || 0,
+        author_name: author?.username || 'Unknown User',
+        category_name: category?.name || 'Unknown Category',
+        category_color: category?.color || '#6B7280',
+        category_icon: category?.icon || '📝'
+      }
+    }) || []
 
     return NextResponse.json({ bookmarks: transformedBookmarks })
   } catch (error) {
