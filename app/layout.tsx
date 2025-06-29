@@ -16,6 +16,16 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Interstellar Nerd Forum",
   description: "A community forum for space enthusiasts and tech nerds",
+  icons: {
+    icon: '/Favicon.png',
+    shortcut: '/Favicon.png',
+    apple: '/Favicon.png',
+  },
+  openGraph: {
+    title: 'Interstellar Nerd Forum',
+    description: 'A community forum for space enthusiasts and tech nerds',
+    images: ['/MainLogo.png'],
+  },
 };
 
 export default function RootLayout({

@@ -1,12 +1,20 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Interstellar Nerd Forum
-        </h1>
+        <div className="mb-6">
+          <Image
+            src="/MainLogo.png"
+            alt="Interstellar Nerd Forum"
+            width={240}
+            height={60}
+            className="h-12 w-auto mx-auto mb-4"
+          />
+        </div>
+        
         <p className="text-gray-600 mb-8">
           Join our community of space enthusiasts and tech nerds! 
           Connect with like-minded individuals and explore the cosmos of knowledge.
@@ -26,10 +34,24 @@ export default function Home() {
           >
             Sign Up
           </Link>
+          
+          <Link
+            href="/forum"
+            className="w-full inline-flex justify-center py-2 px-4 text-sm font-medium text-blue-600 hover:text-blue-800"
+          >
+            Browse Forum (No Account Required)
+          </Link>
         </div>
 
-        <div className="mt-8 text-sm text-gray-500">
-          <p>🚀 Explore • 🤖 Learn • 🌟 Connect</p>
+        <div className="mt-8 flex justify-center items-center space-x-2 text-sm text-gray-500">
+          <Image
+            src="/SmallIcon.png"
+            alt="Icon"
+            width={16}
+            height={16}
+            className="w-4 h-4"
+          />
+          <span>🚀 Explore • 🤖 Learn • 🌟 Connect</span>
         </div>
       </div>
     </div>
