@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 interface Post {
@@ -24,7 +24,7 @@ interface Category {
   color: string
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const { data: session } = useSession()
   const searchParams = useSearchParams()
   
@@ -334,5 +334,13 @@ export default function SearchPage() {
         )}
       </main>
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchPageContent />
+    </Suspense>
   )
 } 

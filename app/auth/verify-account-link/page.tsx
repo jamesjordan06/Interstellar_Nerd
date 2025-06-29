@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 
-export default function VerifyAccountLink() {
+function VerifyAccountLinkForm() {
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [provider, setProvider] = useState('')
@@ -194,5 +194,21 @@ export default function VerifyAccountLink() {
         </div>
       </div>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+    </div>
+  )
+}
+
+export default function VerifyAccountLink() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <VerifyAccountLinkForm />
+    </Suspense>
   )
 } 
